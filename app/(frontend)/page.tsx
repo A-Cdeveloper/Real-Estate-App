@@ -1,8 +1,10 @@
+//import Hero from "@/components/frontend/layout/Hero";
 import LatestNews from "@/components/frontend/news/LatestNews";
 import LatestProprietes from "@/components/frontend/proprietes/LatestProprietes";
 import PromotedProprietes from "@/components/frontend/proprietes/PromotedProprietes";
-import { Spinner } from "@/components/frontend/Spinner";
+import CarouselSkeleton from "@/components/frontend/skeletons/CarouselSkeleton";
 import { Suspense } from "react";
+import { Typography } from "@/components/ui/typography";
 
 export default async function HomePage() {
   return (
@@ -14,7 +16,19 @@ export default async function HomePage() {
           {/* Row 1: Promoted Properties + Latest News */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
-              <Suspense fallback={<Spinner />}>
+              <Suspense
+                fallback={
+                  <div>
+                    <Typography variant="h2" className="mb-6">
+                      Promoted Properties
+                    </Typography>
+                    <CarouselSkeleton
+                      itemsCount={3}
+                      itemClassName="basis-full md:basis-1/2 lg:basis-1/2"
+                    />
+                  </div>
+                }
+              >
                 <PromotedProprietes />
               </Suspense>
             </div>
@@ -24,7 +38,16 @@ export default async function HomePage() {
           {/* Row 2: Latest Properties + Future Widget */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
-              <Suspense fallback={<Spinner />}>
+              <Suspense
+                fallback={
+                  <div>
+                    <Typography variant="h2" className="mb-6">
+                      Latest Properties
+                    </Typography>
+                    <CarouselSkeleton itemsCount={3} />
+                  </div>
+                }
+              >
                 <LatestProprietes />
               </Suspense>
             </div>

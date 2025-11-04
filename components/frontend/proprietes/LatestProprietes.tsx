@@ -1,14 +1,27 @@
 import { getLatestProperties } from "@/lib/queries/properties";
 import RealtyListItem from "./RealtyListItem";
 import CarouselCustum from "@/components/frontend/CarouselCustum";
+import EmptyState from "@/components/frontend/EmptyState";
+import { LATEST_PROPERTIES_COUNT } from "@/lib/constants";
+import { Typography } from "@/components/ui/typography";
 
 const LatestProprietes = async () => {
-  const latestProperties = await getLatestProperties(9);
+  const latestProperties = await getLatestProperties(LATEST_PROPERTIES_COUNT);
+
+  if (latestProperties.length === 0) {
+    return (
+      <EmptyState
+        title="No latest properties found"
+        message="There are no latest properties available at this time."
+      />
+    );
+  }
+
   return (
     <div>
-      <h2 className="text-3xl font-nunito font-bold text-foreground mb-6">
+      <Typography variant="h2" className="mb-6">
         Latest Properties
-      </h2>
+      </Typography>
       <CarouselCustum
         items={latestProperties}
         render={(property) => <RealtyListItem property={property} />}

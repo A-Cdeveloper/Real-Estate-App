@@ -1,14 +1,15 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import NewsListItem from "./NewsListItem";
+import { Typography } from "@/components/ui/typography";
 
 const LatestNews = () => {
   return (
     <div className="lg:col-span-1">
       <div className="sticky top-8">
-        <h2 className="text-3xl font-nunito font-bold text-foreground mb-6">
+        <Typography variant="h2" className="mb-6">
           Latest News
-        </h2>
+        </Typography>
         <div className="space-y-1.5 h-[360px] overflow-y-auto pe-4 custom-scrollbar relative">
           <NewsListItem />
           <NewsListItem />

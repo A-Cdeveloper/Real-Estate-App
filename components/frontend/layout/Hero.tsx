@@ -2,6 +2,7 @@ import { ChevronDown, Search } from "lucide-react";
 import Image from "next/image";
 import { Button } from "../../ui/button";
 import { Card } from "../../ui/card";
+import { Typography } from "../../ui/typography";
 
 const Hero = () => {
   return (
@@ -25,10 +26,10 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto">
           <Card className="rounded-2xl p-8 shadow-lg bg-card/90 backdrop-blur-md">
             {/* Heading */}
-            <h1 className="text-4xl md:text-5xl font-nunito font-bold text-foreground mb-4">
+            <Typography variant="h1" className="text-4xl md:text-5xl mb-4">
               Find your <span className="text-primary">perfect investment</span>{" "}
               properties
-            </h1>
+            </Typography>
             <p className="text-foreground/90 font-nunito-sans text-lg mb-4">
               Explore a selection of high-value real estate opportunities
               designed for financial growth and stability

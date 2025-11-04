@@ -4,7 +4,8 @@ import { getAllProperties } from "@/lib/queries/properties";
 import ProprietesMeta from "@/components/frontend/proprietes/ProprietesMeta";
 import { calculateSkip, getPaginationData } from "@/lib/utils/pagination";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
-import { Spinner } from "@/components/frontend/Spinner";
+import PropertiesGridSkeleton from "@/components/frontend/skeletons/PropertiesGridSkeleton";
+import EmptyState from "@/components/frontend/EmptyState";
 
 import { Suspense } from "react";
 import { Typography } from "@/components/ui/typography";
@@ -21,16 +22,11 @@ const ProprietesPage = async ({
 
   return (
     <section className="container mx-auto px-4 lg:px-8 py-12">
-      <Typography variant="h1">All Proprietes</Typography>
+      <Typography variant="h1" className="mb-8">
+        All Proprietes
+      </Typography>
 
-      <Suspense
-        key={page}
-        fallback={
-          <div className="flex justify-center items-center py-12">
-            <Spinner className="size-8" />
-          </div>
-        }
-      >
+      <Suspense key={page} fallback={<PropertiesGridSkeleton />}>
         <ProprietesList page={page} />
       </Suspense>
     </section>
@@ -54,6 +50,15 @@ const ProprietesList = async ({ page }: { page: number }) => {
     ITEMS_PER_PAGE,
     total
   );
+
+  if (properties.length === 0) {
+    return (
+      <EmptyState
+        title="No properties found"
+        message="There are no properties available at this time."
+      />
+    );
+  }
 
   return (
     <>

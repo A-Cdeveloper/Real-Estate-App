@@ -1,13 +1,14 @@
 import NewsListItem from "@/components/frontend/news/NewsListItem";
+import { Typography } from "@/components/ui/typography";
 
 const AllNewsPage = () => {
   return (
     <section className="container mx-auto px-4 lg:px-8 py-12">
       <div className="lg:col-span-1">
         <div className="sticky top-8">
-          <h2 className="text-3xl font-nunito font-bold text-foreground mb-6">
+          <Typography variant="h2" className="mb-6">
             News
-          </h2>
+          </Typography>
           <div className="space-y-4">
             <NewsListItem />
             <NewsListItem />

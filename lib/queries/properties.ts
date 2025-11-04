@@ -1,5 +1,9 @@
 import prisma from "@/lib/prisma";
 import { getPrismaErrorMessage } from "@/lib/prisma-errors";
+import {
+  LATEST_PROPERTIES_COUNT,
+  PROMOTED_PROPERTIES_COUNT,
+} from "@/lib/constants";
 
 /**
  * Get latest properties
@@ -7,7 +11,9 @@ import { getPrismaErrorMessage } from "@/lib/prisma-errors";
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export async function getLatestProperties(take: number = 9) {
+export async function getLatestProperties(
+  take: number = LATEST_PROPERTIES_COUNT
+) {
   try {
     await wait(3000);
     const properties = await prisma.property.findMany({
@@ -24,7 +30,10 @@ export async function getLatestProperties(take: number = 9) {
 /**
  * Get promoted properties (sorted by price desc)
  */
-export async function getPromotedProperties(take: number = 9) {
+export async function getPromotedProperties(
+  take: number = PROMOTED_PROPERTIES_COUNT
+) {
+  await wait(6000);
   try {
     const properties = await prisma.property.findMany({
       take,

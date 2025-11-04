@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Typography } from "@/components/ui/typography";
 
 export default function Error({
   error,
@@ -23,9 +24,9 @@ export default function Error({
         <div className="flex justify-center mb-4">
           <AlertTriangle className="w-16 h-16 text-destructive" />
         </div>
-        <h2 className="font-nunito font-bold text-2xl mb-2 text-foreground">
+        <Typography variant="h2" className="mb-2">
           Došlo je do greške.
-        </h2>
+        </Typography>
 
         {error.message && (
           <div className="bg-destructive/10 border border-destructive/20 rounded-md p-4 mb-4">

@@ -8,3 +8,5 @@ export const COPYRIGHT = {
 };
 
 export const ITEMS_PER_PAGE = 12;
+export const LATEST_PROPERTIES_COUNT = 9;
+export const PROMOTED_PROPERTIES_COUNT = 9;

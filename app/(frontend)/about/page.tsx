@@ -1,9 +1,9 @@
-import React from "react";
+import { Typography } from "@/components/ui/typography";
 
 const AboutPage = () => {
   return (
     <section className="container mx-auto px-4 lg:px-8 py-12">
-      <div>AboutPage</div>
+      <Typography variant="h1">About</Typography>
     </section>
   );
 };

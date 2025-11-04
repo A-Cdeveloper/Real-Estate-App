@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowLeft, MapPin, Square, Calendar, User, Phone } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { notFound } from "next/navigation";
+import { Typography } from "@/components/ui/typography";
 
 type Params = Promise<{ id: string }>;
 
@@ -52,9 +53,9 @@ const RealtyDetailPage = async ({ params }: { params: Params }) => {
         <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-8">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="flex items-center gap-3 mb-3">
-              <h1 className="text-4xl md:text-5xl font-nunito font-bold text-white">
+              <Typography variant="h1" className="text-4xl md:text-5xl text-white">
                 {property.name}
-              </h1>
+              </Typography>
               {property.promoted && (
                 <Badge className="bg-primary text-primary-foreground font-nunito-sans">
                   Promoted
