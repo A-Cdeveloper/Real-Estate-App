@@ -3,26 +3,19 @@ import { Property } from "@prisma/client";
 import { MapPin } from "lucide-react";
 import { Square } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import CustumImage from "@/components/frontend/CustumImage";
 import Link from "next/link";
 
 const RealtyListItem = ({ property }: { property: Property }) => {
   return (
     <Link href={`/proprietes/${property.id}`}>
-      <Card className="overflow-hidden hover:shadow-md transition-shadow p-0">
-        <div className="h-54 relative overflow-hidden">
-          {property.image ? (
-            <Image
-              src={property.image}
-              alt={property.name}
-              fill
-              className="object-cover"
-              unoptimized
-            />
-          ) : (
-            <div className="h-full bg-muted"></div>
-          )}
-        </div>
+      <Card className="group overflow-hidden hover:shadow-md transition-shadow p-0 hover:bg-muted">
+        <CustumImage
+          src={property.image}
+          alt={property.name}
+          className="h-48 rounded-none"
+          showFallback={true}
+        />
         <CardContent className="p-6 pt-0">
           <CardTitle className="font-nunito font-semibold text-lg mb-2">
             {property.name}

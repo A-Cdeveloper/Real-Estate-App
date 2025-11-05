@@ -6,9 +6,9 @@ const PropertyItemSkeleton = () => (
   <Card className="overflow-hidden p-0">
     <Skeleton className="h-54 w-full" />
     <CardContent className="p-6 pt-0 space-y-3">
-      <Skeleton className="h-6 w-3/4" />
-      <Skeleton className="h-4 w-1/2" />
-      <Skeleton className="h-4 w-2/3" />
+      <Skeleton className="h-4 w-3/4" />
+      <Skeleton className="h-3 w-1/2" />
+      <Skeleton className="h-3 w-2/3" />
       <div className="flex items-center justify-between pt-2">
         <Skeleton className="h-8 w-24" />
         <Skeleton className="h-10 w-28" />

@@ -1,6 +1,6 @@
 import BackButton from "@/components/frontend/BackButton";
 import NewsDate from "@/components/frontend/news/detail/NewsDate";
-import NewsImage from "@/components/frontend/news/detail/NewsImage";
+import CustumImage from "@/components/frontend/CustumImage";
 import LatestNews from "@/components/frontend/news/LatestNews";
 import LatestNewsSkeleton from "@/components/frontend/skeletons/LatestNewsSkeleton";
 import { Typography } from "@/components/ui/typography";
@@ -34,9 +34,11 @@ const NewsDetailPage = async ({ params }: { params: Params }) => {
             </Typography>
             <NewsDate date={newsItem.createdAt} className="mb-4" />
           </div>
-          <NewsImage
-            newsItem={newsItem}
+          <CustumImage
+            src={newsItem.image}
+            alt={newsItem.title}
             className="w-full h-[400px] md:h-[500px]"
+            priority
           />
           <Typography
             variant="p"

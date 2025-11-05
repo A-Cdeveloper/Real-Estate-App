@@ -2,16 +2,16 @@ import { Card, CardTitle } from "@/components/ui/card";
 import { News } from "@prisma/client";
 import Link from "next/link";
 import NewsDate from "./detail/NewsDate";
-import NewsImage from "./detail/NewsImage";
+import CustumImage from "@/components/frontend/CustumImage";
 
 const NewsGridtem = ({ newsItem }: { newsItem: News }) => {
   return (
     <Card className="group overflow-hidden hover:shadow-md transition-shadow p-0 hover:bg-muted">
       <Link href={`/news/${newsItem.id}`}>
-        <NewsImage
-          newsItem={newsItem}
+        <CustumImage
+          src={newsItem.image}
+          alt={newsItem.title}
           className="h-56 w-full rounded-none"
-          newsImageClassName="group-hover:scale-105 transition-transform duration-300"
         />
 
         <div className="p-6">

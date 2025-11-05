@@ -2,13 +2,17 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { News } from "@prisma/client";
 import Link from "next/link";
 import NewsDate from "./detail/NewsDate";
-import NewsImage from "./detail/NewsImage";
+import CustumImage from "@/components/frontend/CustumImage";
 
 const LatestNewsItem = ({ newsItem }: { newsItem: News }) => {
   return (
     <Card className="py-4 rounded-none border-0 border-b border-border bg-transparent shadow-none hover:bg-muted transition-colors">
       <Link href={`/news/${newsItem.id}`} className="flex gap-4 px-2">
-        <NewsImage newsItem={newsItem} className="w-25 h-25 flex-shrink-0" />
+        <CustumImage
+          src={newsItem.image}
+          alt={newsItem.title}
+          className="w-25 h-25 flex-shrink-0"
+        />
         <div className="flex-1 flex flex-col justify-between">
           <div>
             <NewsDate date={newsItem.createdAt} className="mb-1" />
