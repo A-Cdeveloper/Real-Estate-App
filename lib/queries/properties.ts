@@ -74,7 +74,7 @@ export async function getAllProperties(take: number = 12, skip: number = 0) {
  * Get property by ID
  */
 export async function getPropertyById(id: string) {
-  await wait(3000);
+  //await wait(3000);
   try {
     const property = await prisma.property.findUnique({
       where: { id },
