@@ -35,7 +35,7 @@ const LatestNews = async ({
         </Typography>
         <div
           className={cn(
-            "space-y-0 h-[360px] overflow-y-auto pe-4 custom-scrollbar relative",
+            "space-y-0 h-[330px] overflow-y-auto pe-4 custom-scrollbar relative",
             className
           )}
         >

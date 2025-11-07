@@ -19,7 +19,7 @@ const LatestNewsItem = ({ newsItem }: { newsItem: News }) => {
             <CardTitle className="font-nunito font-semibold text-base mb-2 line-clamp-2">
               {newsItem.title}
             </CardTitle>
-            <CardDescription className="text-muted-foreground font-nunito-sans text-sm line-clamp-2 mb-4">
+            <CardDescription className="text-muted-foreground font-nunito-sans text-sm line-clamp-2 mb-0">
               {newsItem.description}
             </CardDescription>
           </div>
