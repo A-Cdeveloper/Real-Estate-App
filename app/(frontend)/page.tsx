@@ -2,9 +2,10 @@
 import LatestNews from "@/components/frontend/news/LatestNews";
 import LatestProprietes from "@/components/frontend/proprietes/LatestProprietes";
 import PromotedProprietes from "@/components/frontend/proprietes/PromotedProprietes";
+import RealtyStats from "@/components/frontend/proprietes/RealtyStats";
 import CarouselSkeleton from "@/components/frontend/skeletons/CarouselSkeleton";
-import { Suspense } from "react";
 import LatestNewsSkeleton from "@/components/frontend/skeletons/LatestNewsSkeleton";
+import { Suspense } from "react";
 
 export default async function HomePage() {
   return (
@@ -27,10 +28,7 @@ export default async function HomePage() {
             >
               <PromotedProprietes />
             </Suspense>
-
-            <Suspense fallback={<LatestNewsSkeleton />}>
-              <LatestNews />
-            </Suspense>
+            <RealtyStats />
           </div>
 
           {/* Row 2: Latest Properties + Future Widget */}
@@ -42,9 +40,9 @@ export default async function HomePage() {
             >
               <LatestProprietes />
             </Suspense>
-            <div className="lg:col-span-1">
-              {/* Future widget placeholder */}
-            </div>
+            <Suspense fallback={<LatestNewsSkeleton />}>
+              <LatestNews />
+            </Suspense>
           </div>
         </div>
       </section>
