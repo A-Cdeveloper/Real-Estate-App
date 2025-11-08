@@ -12,3 +12,10 @@ export const NEWS_PER_PAGE = 8;
 export const LATEST_NEWS_COUNT = 5;
 export const LATEST_PROPERTIES_COUNT = 9;
 export const PROMOTED_PROPERTIES_COUNT = 9;
+
+export const NAVIGATION_LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/proprietes", label: "Proprietes" },
+  { href: "/contact", label: "Contact" },
+] as const;

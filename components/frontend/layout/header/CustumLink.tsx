@@ -8,15 +8,26 @@ type CustomLinkProps = {
   href: string;
   children: React.ReactNode;
   className?: string;
+  onClick?: () => void;
 };
 
-const CustomLink = ({ href, children, className }: CustomLinkProps) => {
+const CustomLink = ({
+  href,
+  children,
+  className,
+  onClick,
+}: CustomLinkProps) => {
   const pathname = usePathname();
 
-  const isActive = pathname === href;
+  const isActive =
+    href === "/"
+      ? pathname === "/"
+      : pathname === href || pathname.startsWith(`${href}/`);
+
   return (
     <Link
       href={href}
+      onClick={onClick}
       aria-current={isActive ? "page" : undefined}
       className={cn(
         "text-foreground hover:text-primary transition-colors font-bold",
