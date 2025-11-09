@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import FrontFooter from "@/components/frontend/layout/footer/FrontFooter";
 import FrontHeader from "@/components/frontend/layout/header/FrontHeader";
+import { Toaster } from "@/components/ui/sonner";
 import { APP_NAME, APP_DESCRIPTION } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -28,6 +29,7 @@ export default function RootLayout({
         {children}
       </main>
       <FrontFooter />
+      <Toaster />
     </>
   );
 }

@@ -4,20 +4,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Typography } from "@/components/ui/typography";
 import CustomInput from "@/components/frontend/CustomInput";
 import { sendMessageAction, type ActionState } from "../actions/sendMessage";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
-
-const SuccessMessage = () => {
-  return (
-    <div
-      role="alert"
-      aria-live="polite"
-      className="mb-4 rounded-md bg-green-50 p-4 text-sm text-green-800 dark:bg-green-900/20 dark:text-green-400"
-    >
-      Message sent successfully!
-    </div>
-  );
-};
+import { toast } from "sonner";
 
 const ErrorMessage = ({
   state,
@@ -50,21 +39,20 @@ const ErrorMessage = ({
 const ContactFormular = () => {
   const [state, formAction, pending] = useActionState(sendMessageAction, null);
 
+  // Show toast notifications for success and general errors
+  useEffect(() => {
+    if (state?.success) {
+      toast.success("Message sent successfully!");
+    } else if (state && !state.success && state.errors?._general) {
+      toast.error(state.errors._general[0]);
+    }
+  }, [state]);
+
   return (
     <div className="rounded-2xl border bg-secondary/30 p-8 shadow-sm">
       <Typography variant="h2" className="mb-6 text-2xl">
         Send us a message
       </Typography>
-      {state?.success && <SuccessMessage />}
-      {state && !state.success && state.errors?._general && (
-        <div
-          role="alert"
-          aria-live="polite"
-          className="mb-4 rounded-md bg-red-50 p-4 text-sm text-red-800 dark:bg-red-900/20 dark:text-red-400"
-        >
-          {state.errors._general[0]}
-        </div>
-      )}
       <form className="grid gap-4" action={formAction} noValidate>
         <div>
           <CustomInput
