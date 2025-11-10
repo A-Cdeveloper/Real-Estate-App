@@ -2,9 +2,8 @@ import { PrismaClient, Prisma, PropertyType } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // Helper funkcija za određivanje tipa nekretnine na osnovu naziva
-function getPropertyType(name: string, address?: string): PropertyType {
+function getPropertyType(name: string): PropertyType {
   const lowerName = name.toLowerCase();
-  const lowerAddress = address?.toLowerCase() || "";
 
   if (
     lowerName.includes("office") ||
@@ -68,7 +67,11 @@ function getCoordinates(address: string): { lat: number; lng: number } | null {
   }
 
   // Niš
-  if (lowerAddress.includes("niš") || lowerAddress.includes("medijana") || lowerAddress.includes("palilula")) {
+  if (
+    lowerAddress.includes("niš") ||
+    lowerAddress.includes("medijana") ||
+    lowerAddress.includes("palilula")
+  ) {
     return { lat: 43.3209, lng: 21.8958 };
   }
 
@@ -652,7 +655,7 @@ async function main() {
 
   // Dodajemo type, lat i lng za svaku nekretninu
   const propertiesWithTypeAndCoords = properties.map((property) => {
-    const type = getPropertyType(property.name, property.address || undefined);
+    const type = getPropertyType(property.name);
     const coords = property.address ? getCoordinates(property.address) : null;
 
     return {

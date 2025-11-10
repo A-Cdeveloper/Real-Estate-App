@@ -1,5 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
 
 const RealyDescription = ({ description }: { description: string }) => {
   if (!description) return null;
