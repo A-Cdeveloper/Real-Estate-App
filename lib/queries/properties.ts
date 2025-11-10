@@ -117,3 +117,57 @@ export async function getPropertyById(id: string) {
     throw new Error(getPrismaErrorMessage(error));
   }
 }
+
+/**
+ * Get property statistics
+ * Returns: total listings, average price per m², and count added in last week
+ */
+export async function getPropertyStats() {
+  try {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+    const [total, addedLastWeek, propertiesWithArea] = await Promise.all([
+      // Total count
+      prisma.property.count(),
+      // Count added in last week
+      prisma.property.count({
+        where: {
+          createdAt: {
+            gte: oneWeekAgo,
+          },
+        },
+      }),
+      // Get properties with area for average calculation
+      prisma.property.findMany({
+        where: {
+          area: {
+            not: null,
+          },
+        },
+        select: {
+          price: true,
+          area: true,
+        },
+      }),
+    ]);
+
+    // Calculate average price per m²
+    let avgPricePerSqm = 0;
+    if (propertiesWithArea.length > 0) {
+      const totalPricePerSqm = propertiesWithArea.reduce((sum, prop) => {
+        return sum + prop.price / (prop.area || 1);
+      }, 0);
+      avgPricePerSqm = totalPricePerSqm / propertiesWithArea.length;
+    }
+
+    return {
+      total,
+      avgPricePerSqm: Math.round(avgPricePerSqm),
+      addedLastWeek,
+    };
+  } catch (error) {
+    console.error("Database error:", error);
+    throw new Error(getPrismaErrorMessage(error));
+  }
+}
