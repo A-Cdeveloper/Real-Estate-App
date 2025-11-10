@@ -9,6 +9,7 @@ import CarouselSkeleton from "@/components/frontend/skeletons/CarouselSkeleton";
 import LatestNewsSkeleton from "@/components/frontend/skeletons/LatestNewsSkeleton";
 import { Suspense } from "react";
 import Hero from "@/components/frontend/layout/Hero";
+import RealtyStatsSkeleton from "@/components/frontend/skeletons/RealtyStatsSkeleton";
 
 export const metadata: Metadata = {
   title: `${APP_NAME} | Find Your Perfect Property`,
@@ -42,7 +43,9 @@ export default async function HomePage() {
             >
               <PromotedProprietes />
             </Suspense>
-            <RealtyStats />
+            <Suspense fallback={<RealtyStatsSkeleton />}>
+              <RealtyStats />
+            </Suspense>
           </div>
 
           {/* Row 2: Latest Properties + Future Widget */}
