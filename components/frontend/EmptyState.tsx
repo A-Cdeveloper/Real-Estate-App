@@ -13,7 +13,7 @@ const EmptyState = ({
   variant = "default",
 }: EmptyStateProps) => {
   return (
-    <Alert variant={variant} className="max-w-md">
+    <Alert variant={variant} className="max-w-md mx-auto mt-12">
       <Info className="h-4 w-4" />
       <AlertTitle>{title}</AlertTitle>
       <AlertDescription>{message}</AlertDescription>
