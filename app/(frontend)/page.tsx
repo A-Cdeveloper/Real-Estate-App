@@ -8,7 +8,7 @@ import RealtyStats from "@/components/frontend/proprietes/RealtyStats";
 import CarouselSkeleton from "@/components/frontend/skeletons/CarouselSkeleton";
 import LatestNewsSkeleton from "@/components/frontend/skeletons/LatestNewsSkeleton";
 import { Suspense } from "react";
-import Hero from "@/components/frontend/layout/Hero";
+import Hero from "@/components/frontend/Hero";
 import RealtyStatsSkeleton from "@/components/frontend/skeletons/RealtyStatsSkeleton";
 
 export const metadata: Metadata = {
