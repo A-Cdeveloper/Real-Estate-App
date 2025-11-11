@@ -19,13 +19,15 @@ const ProprietesList = async ({
   params: { [key: string]: string | undefined };
 }) => {
   // parse search params
-  const { page, filters, queryParams } = parsePropertySearchParams(params);
+  const { page, filters, queryParams, sort } =
+    parsePropertySearchParams(params);
 
   const skip = calculateSkip(page, ITEMS_PER_PAGE);
   const { properties, total } = await getAllProperties(
     ITEMS_PER_PAGE,
     skip,
-    filters
+    filters,
+    sort
   );
 
   // get pagination data

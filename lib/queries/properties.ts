@@ -4,7 +4,8 @@ import {
   LATEST_PROPERTIES_COUNT,
   PROMOTED_PROPERTIES_COUNT,
 } from "@/lib/constants";
-import { PropertyFilters } from "@/types/properties";
+import { PropertyFilters, PropertySort } from "@/types/properties";
+import { parsePropertySort } from "../utils/sortingParcer";
 
 /**
  * Get latest properties
@@ -50,7 +51,8 @@ export async function getPromotedProperties(
 export async function getAllProperties(
   take: number = 12,
   skip: number = 0,
-  filters?: PropertyFilters
+  filters?: PropertyFilters,
+  sort?: PropertySort
 ) {
   try {
     const minPrice = filters?.minPrice ? Number(filters.minPrice) : undefined;
@@ -69,12 +71,15 @@ export async function getAllProperties(
       }),
     };
 
+    const { field, order } = parsePropertySort(sort);
+    const orderBy = { [field]: order } as { [key: string]: "asc" | "desc" };
+
     const [properties, total] = await Promise.all([
       prisma.property.findMany({
         take,
         skip,
         where,
-        orderBy: { createdAt: "desc" },
+        orderBy,
       }),
       prisma.property.count({ where }),
     ]);

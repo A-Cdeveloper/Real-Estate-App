@@ -2,11 +2,10 @@ import PropertiesGridSkeleton from "@/components/frontend/skeletons/PropertiesGr
 import { APP_NAME, SITE_URL } from "@/lib/constants";
 import type { Metadata } from "next";
 
+import ProprietesWrapper from "@/components/frontend/proprietes/ProprietesWrapper";
+import ProprietesList from "@/components/frontend/proprietes/ProprietesList";
 import { Typography } from "@/components/ui/typography";
 import { Suspense } from "react";
-import ProprietesList from "@/components/frontend/proprietes/ProprietesList";
-import PropertyTypeFilter from "@/components/frontend/proprietes/PropertyTypeFilter";
-import ProprietesFilterWrapper from "@/components/frontend/proprietes/ProprietesFilterWrapper";
 
 export const metadata: Metadata = {
   title: `Properties | ${APP_NAME}`,
@@ -38,7 +37,7 @@ const ProprietesPage = async ({
 
       {/* Filters */}
 
-      <ProprietesFilterWrapper initialParams={params} />
+      <ProprietesWrapper initialParams={params} />
 
       <Suspense key={params.page} fallback={<PropertiesGridSkeleton />}>
         <ProprietesList params={params} />

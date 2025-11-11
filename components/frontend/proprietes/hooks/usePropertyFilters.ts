@@ -1,7 +1,7 @@
 "use client";
 
 import { PropertyType } from "@prisma/client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useReducer, useState } from "react";
 import { propertyFiltersSchema } from "@/lib/schemas/propertyFilters";
 import type { PropertyFilters } from "@/types/properties";
@@ -51,6 +51,7 @@ export const usePropertyFilters = (
   clearRoute?: string
 ) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   // Initialize state from URL params if provided
   const getInitialState = (): FilterState => {
@@ -100,11 +101,15 @@ export const usePropertyFilters = (
     // Clear errors if validation passes
     setErrors({});
 
-    // Build URL params dynamically
-    const params = new URLSearchParams();
+    // Build URL params dynamically, preserving existing params like sort
+    const params = new URLSearchParams(searchParams.toString());
+
+    // Update filter params
     Object.entries(result.data).forEach(([key, value]) => {
       if (value) {
         params.set(key, String(value));
+      } else {
+        params.delete(key);
       }
     });
 
@@ -117,7 +122,16 @@ export const usePropertyFilters = (
     dispatch({ type: "CLEAR_ALL" });
     setErrors({});
 
-    router.push(clearRoute || "/proprietes");
+    // Preserve sort parameter when clearing filters
+    const params = new URLSearchParams();
+    const currentSort = searchParams.get("sort");
+    if (currentSort) {
+      params.set("sort", currentSort);
+    }
+
+    const route = clearRoute || "/proprietes";
+    const queryString = params.toString();
+    router.push(`${route}${queryString ? `?${queryString}` : ""}`);
   };
 
   const hasActiveFilters = Boolean(

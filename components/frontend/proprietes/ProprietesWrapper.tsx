@@ -1,12 +1,20 @@
 "use client";
 
+/**
+ * ProprietesWrapper component wrapper for the property filters and sort select
+ * @param initialParams - initial parameters from URL
+ * @param className - optional className for the wrapper
+ * @returns ProprietesWrapper component
+ */
+
 import { Activity, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FilterIcon, X } from "lucide-react";
 import PropertyTypeFilter from "./PropertyTypeFilter";
 import { cn } from "@/lib/utils";
+import PropertySortSelect from "./PropertySortSelect";
 
-const ProprietesFilterWrapper = ({
+const ProprietesWrapper = ({
   initialParams,
   className,
 }: {
@@ -38,13 +46,8 @@ const ProprietesFilterWrapper = ({
             </>
           )}
         </Button>
-
-        <div className="flex items-center gap-2">
-          <select className="px-4 py-1.5 border border-input rounded-md bg-background font-nunito-sans text-primary focus:outline-none focus:ring-1 focus:ring-ring">
-            <option>Price: Low to High</option>
-            <option>Price: High to Low</option>
-          </select>
-        </div>
+        {/* Sort Select */}
+        <PropertySortSelect />
       </div>
 
       <Activity mode={isOpen ? "visible" : "hidden"}>
@@ -59,4 +62,4 @@ const ProprietesFilterWrapper = ({
   );
 };
 
-export default ProprietesFilterWrapper;
+export default ProprietesWrapper;
