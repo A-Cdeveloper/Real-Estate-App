@@ -118,19 +118,19 @@ Replace the connection string with your MySQL database credentials.
 Generate Prisma Client:
 
 ```
-npx prisma generate
+npx prisma generate --schema=./server/prisma/schema.prisma
 ```
 
 Run database migrations:
 
 ```
-npx prisma migrate dev
+npx prisma migrate dev --schema=./server/prisma/schema.prisma
 ```
 
 (Optional) Seed the database with sample data:
 
 ```
-npx prisma db seed
+npx prisma db seed --schema=./server/prisma/schema.prisma
 ```
 
 ### 5\. Start Development Server
@@ -164,32 +164,57 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 │   ├── layout.tsx                # Root layout
 │   ├── loading.tsx               # Global loading UI
 │   └── not-found.tsx            # 404 page
-├── components/
-│   ├── frontend/                 # Frontend components
-│   │   ├── layout/               # Layout components
+├── features/
+│   ├── frontend/                 # Frontend feature components
 │   │   ├── proprietes/          # Property components
 │   │   │   ├── hooks/            # Custom hooks (usePropertyFilters)
 │   │   │   ├── PropertyTypeFilter.tsx
-│   │   │   ├── ProprietesFilterWrapper.tsx
+│   │   │   ├── ProprietesWrapper.tsx
 │   │   │   └── ...               # Other property components
 │   │   ├── news/                 # News components
-│   │   ├── skeletons/            # Loading skeletons
-│   │   └── ...                   # Shared components
-│   ├── providers/                # React context providers
+│   │   ├── contact/              # Contact components
+│   │   └── ...                   # Other frontend features
+│   └── backend/                  # Backend feature components (admin panel)
+├── components/
+│   ├── frontend/                 # Frontend-specific components
+│   │   ├── layout/               # Layout components (Header, Footer)
+│   │   └── skeletons/            # Loading skeletons
+│   ├── shared/                   # Shared reusable components
+│   │   ├── EmptyState.tsx
+│   │   ├── Modal.tsx
+│   │   ├── Spinner.tsx
+│   │   ├── CustomInput.tsx
+│   │   ├── BackButton.tsx
+│   │   ├── PaginationControls.tsx
+│   │   └── CustumImage.tsx
 │   └── ui/                       # shadcn/ui components
-├── lib/
-│   ├── queries/                  # Database query functions
+├── server/
 │   ├── actions/                  # Server actions
-│   ├── schemas/                   # Zod validation schemas
+│   │   ├── properties.ts
+│   │   └── sendMessage.ts
+│   ├── queries/                  # Database query functions
+│   │   ├── properties.ts
+│   │   └── news.ts
+│   ├── mail/                     # Email functionality
+│   │   ├── sendContactEmail.tsx
+│   │   ├── templates/
+│   │   └── transporter.ts
+│   ├── prisma/                   # Prisma configuration
+│   │   ├── schema.prisma         # Database schema
+│   │   ├── seed.ts               # Database seeder
+│   │   └── migrations/           # Database migrations
+│   ├── schemas/                  # Zod validation schemas
+│   │   ├── contact.ts
+│   │   └── propertyFilters.ts
+│   ├── prisma.ts                 # Prisma client instance
+│   └── prisma-errors.ts          # Prisma error handling
+├── lib/
 │   ├── utils/                    # Utility functions
 │   ├── constants.ts              # Application constants
-│   ├── prisma.ts                 # Prisma client
 │   └── fonts.ts                  # Font configuration
+├── providers/                    # React context providers
+│   └── ThemeProvider.tsx
 ├── types/                         # TypeScript type definitions
-├── prisma/
-│   ├── schema.prisma             # Database schema
-│   ├── seed.ts                   # Database seeder
-│   └── migrations/               # Database migrations
 └── public/                        # Static assets
 ```
 
