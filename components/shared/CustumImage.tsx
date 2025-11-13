@@ -9,6 +9,7 @@ type CustumImageProps = {
   priority?: boolean;
   unoptimized?: boolean;
   showFallback?: boolean;
+  sizes?: string;
 };
 
 const CustumImage = ({
@@ -17,8 +18,9 @@ const CustumImage = ({
   className,
   imageClassName,
   priority = false,
-  unoptimized = true,
+  unoptimized = false,
   showFallback = false,
+  sizes = "100vw",
 }: CustumImageProps) => {
   if (!src) {
     if (showFallback) {
@@ -45,6 +47,8 @@ const CustumImage = ({
         className={cn("object-cover", imageClassName)}
         priority={priority}
         unoptimized={unoptimized}
+        sizes={sizes}
+        quality={85}
       />
     </div>
   );

@@ -20,6 +20,9 @@ export const nunito = localFont({
   ],
   variable: "--font-nunito",
   display: "swap",
+  preload: true,
+  adjustFontFallback: "Arial",
+  fallback: ["system-ui", "arial"],
 });
 
 export const nunitoSans = localFont({
@@ -42,5 +45,7 @@ export const nunitoSans = localFont({
   ],
   variable: "--font-nunito-sans",
   display: "swap",
+  preload: true,
+  adjustFontFallback: "Arial",
+  fallback: ["system-ui", "arial"],
 });
-

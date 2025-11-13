@@ -56,10 +56,11 @@ const AboutPage = () => {
             </div>
           </div>
           <CustumImage
-            src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&fm=jpg&w=1600&fit=crop"
+            src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=800&h=600&fit=crop"
             alt="Modern real estate team collaborating in an office"
             className="h-80 w-full lg:h-[480px]"
             imageClassName="object-cover"
+            sizes="(max-width: 1024px) 100vw, 50vw"
           />
         </div>
       </div>

@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 
 import FrontFooter from "@/components/frontend/layout/footer/FrontFooter";
 import FrontHeader from "@/components/frontend/layout/header/FrontHeader";
-import { Toaster } from "@/components/ui/sonner";
 import { APP_NAME, APP_DESCRIPTION } from "@/lib/constants";
+
+// Lazy load Toaster - only loads when needed (when toast is triggered)
+const Toaster = dynamic(() =>
+  import("@/components/ui/sonner").then((mod) => mod.Toaster)
+);
 
 export const metadata: Metadata = {
   title: APP_NAME,

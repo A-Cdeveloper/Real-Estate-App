@@ -14,6 +14,9 @@ const Hero = () => {
           fill
           className="object-center object-cover"
           priority
+          sizes="100vw"
+          quality={85}
+          fetchPriority="high"
         />
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/10" />

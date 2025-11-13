@@ -8,7 +8,7 @@ type MetaMenuProps = {
 const MetaMenu = ({ title, links }: MetaMenuProps) => {
   return (
     <div>
-      <h4 className="font-nunito font-semibold mb-4">{title}</h4>
+      <h2 className="font-nunito font-semibold mb-4 text-lg">{title}</h2>
       <ul className="space-y-2 font-nunito-sans text-background/80">
         {links.map((link) => (
           <li key={link.href}>
