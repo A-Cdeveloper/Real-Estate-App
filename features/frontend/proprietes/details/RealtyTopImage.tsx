@@ -7,7 +7,7 @@ import { MapPin } from "lucide-react";
 
 const RealtyTopImage = ({ property }: { property: Property }) => {
   return (
-    <div className="relative h-[60vh] min-h-[500px] w-full overflow-hidden">
+    <div className="relative h-[40vh] md:min-h-[60vh] w-full overflow-hidden">
       {property.image ? (
         <Image
           src={property.image}

@@ -16,7 +16,7 @@ const RealyDetailsWidget = ({
       {icon}
       <div className="flex-1 min-w-0">
         <p className="text-muted-foreground text-sm">{label}</p>
-        <p className="font-semibold text-xl">{value}</p>
+        <p className="font-semibold text-lg lg:text-xl">{value}</p>
       </div>
     </div>
   );
@@ -31,7 +31,7 @@ const RealyDetails = ({ property }: { property: PropertyWithOwner }) => {
             <p className="text-muted-foreground font-nunito-sans text-sm mb-1">
               Price
             </p>
-            <p className="text-4xl font-nunito font-bold text-primary">
+            <p className="text-2xl sm:text-3xl md:text-4xl font-nunito font-bold text-primary">
               €{property.price.toLocaleString()}
             </p>
           </div>
@@ -40,7 +40,7 @@ const RealyDetails = ({ property }: { property: PropertyWithOwner }) => {
               <p className="text-muted-foreground font-nunito-sans text-sm mb-1">
                 Area
               </p>
-              <div className="flex items-center gap-2 text-2xl font-nunito font-bold text-foreground">
+              <div className="flex items-center gap-2 text-lg sm:text-xl md:text-2xl font-nunito font-bold text-foreground">
                 <Square className="w-6 h-6" />
                 <span>{property.area} m²</span>
               </div>
@@ -49,7 +49,7 @@ const RealyDetails = ({ property }: { property: PropertyWithOwner }) => {
         </div>
 
         {/* Key Features Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <RealyDetailsWidget
             label="Type"
             value={property.type || "N/A"}
@@ -64,6 +64,7 @@ const RealyDetails = ({ property }: { property: PropertyWithOwner }) => {
               icon={<MapPin className="w-8 h-8 text-primary flex-shrink-0" />}
             />
           )}
+
           {property.area && (
             <RealyDetailsWidget
               label="Price per m²"
