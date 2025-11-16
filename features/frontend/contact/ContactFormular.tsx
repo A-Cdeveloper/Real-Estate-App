@@ -3,48 +3,19 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Typography } from "@/components/ui/typography";
 import CustomInput from "@/components/shared/CustomInput";
-import { sendMessageAction, type ActionState } from "@/server/actions/sendMessage";
+import ErrorFormMessages from "@/components/shared/ErrorFormMessages";
+import { sendMessageAction } from "@/server/actions/sendMessage";
 import { useActionState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
-const ErrorMessage = ({
-  state,
-  fieldName,
-  fieldId,
-}: {
-  state: ActionState | null;
-  fieldName: string;
-  fieldId: string;
-}) => {
-  if (!state || state.success || !state.errors?.[fieldName]) {
-    return null;
-  }
-
-  return (
-    <p
-      id={`${fieldId}-error`}
-      role="alert"
-      aria-live="polite"
-      className="mt-1.5 flex items-center gap-1.5 text-sm text-red-600 dark:text-red-400"
-    >
-      <span className="text-red-500" aria-hidden="true">
-        •
-      </span>
-      {state.errors[fieldName][0]}
-    </p>
-  );
-};
-
 const ContactFormular = () => {
   const [state, formAction, pending] = useActionState(sendMessageAction, null);
 
-  // Show toast notifications for success and general errors
+  // Show toast notification for success
   useEffect(() => {
     if (state?.success) {
       toast.success("Message sent successfully!");
-    } else if (state && !state.success && state.errors?._general) {
-      toast.error(state.errors._general[0]);
     }
   }, [state]);
 
@@ -72,7 +43,7 @@ const ContactFormular = () => {
                 : undefined
             }
           />
-          <ErrorMessage state={state} fieldName="name" fieldId="name" />
+          <ErrorFormMessages state={state} fieldName="name" fieldId="name" />
         </div>
         <div>
           <CustomInput
@@ -93,7 +64,7 @@ const ContactFormular = () => {
                 : undefined
             }
           />
-          <ErrorMessage state={state} fieldName="email" fieldId="email" />
+          <ErrorFormMessages state={state} fieldName="email" fieldId="email" />
         </div>
         <div>
           <CustomInput
@@ -112,7 +83,7 @@ const ContactFormular = () => {
                 : undefined
             }
           />
-          <ErrorMessage state={state} fieldName="phone" fieldId="phone" />
+          <ErrorFormMessages state={state} fieldName="phone" fieldId="phone" />
         </div>
         <div className="grid gap-2">
           <Textarea
@@ -135,8 +106,17 @@ const ContactFormular = () => {
                 : undefined
             }
           />
-          <ErrorMessage state={state} fieldName="message" fieldId="message" />
+          <ErrorFormMessages
+            state={state}
+            fieldName="message"
+            fieldId="message"
+          />
         </div>
+        <ErrorFormMessages
+          state={state}
+          fieldName="_general"
+          fieldId="_general"
+        />
         <Button
           type="submit"
           className="mt-2 w-full sm:w-auto"

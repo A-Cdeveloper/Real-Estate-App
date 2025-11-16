@@ -26,10 +26,9 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }}
       toastOptions={{
         classNames: {
-          success:
-            "!bg-[var(--success)] !text-[var(--success-foreground)] !border-[var(--success)]",
+          success: "!bg-[var(--success)] !text-white !border-[var(--success)]",
           error:
-            "!bg-[var(--destructive)] !text-[var(--destructive-foreground)] !border-[var(--destructive)]",
+            "!bg-[var(--destructive)] !text-white !border-[var(--destructive)]",
         },
       }}
       style={

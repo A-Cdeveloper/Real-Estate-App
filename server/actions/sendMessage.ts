@@ -2,27 +2,28 @@
 
 import { contactFormSchema } from "@/server/schemas/contact";
 import { sendContactEmail } from "@/server/mail/sendContactEmail";
+import { formatZodErrors } from "@/server/utils/zod";
 import { CONTACT_EMAIL } from "@/lib/constants";
 
-type InputData = {
+export type InputData = {
   name: string;
   email: string;
   phone?: string;
   message: string;
 };
 
-export type ActionState =
-  | { success: true; message?: string }
+export type ActionState<TData, TSuccess = { message?: string }> =
+  | ({ success: true } & TSuccess)
   | {
       success: false;
       errors: Record<string, string[]>;
-      data?: InputData;
+      data?: TData;
     };
 
 export async function sendMessageAction(
-  prevState: ActionState | null,
+  prevState: ActionState<InputData> | null,
   formData: FormData
-): Promise<ActionState> {
+): Promise<ActionState<InputData>> {
   const rawData = {
     name: formData.get("name"),
     email: formData.get("email"),
@@ -33,17 +34,9 @@ export async function sendMessageAction(
   const result = contactFormSchema.safeParse(rawData);
 
   if (!result.success) {
-    const errors: Record<string, string[]> = {};
-    result.error.issues.forEach((issue) => {
-      const field = issue.path[0] as string;
-      if (!errors[field]) {
-        errors[field] = [];
-      }
-      errors[field].push(issue.message);
-    });
     return {
       success: false,
-      errors,
+      errors: formatZodErrors(result.error),
       data: {
         name: String(rawData.name || ""),
         email: String(rawData.email || ""),
