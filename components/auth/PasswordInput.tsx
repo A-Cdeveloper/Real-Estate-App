@@ -11,6 +11,8 @@ type PasswordInputProps = {
   name: string;
   placeholder?: string;
   defaultValue?: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   "aria-required"?: boolean | "true" | "false";
   className?: string;
@@ -21,6 +23,8 @@ const PasswordInput = ({
   name,
   placeholder,
   defaultValue,
+  value,
+  onChange,
   disabled,
   "aria-required": ariaRequired,
   className,
@@ -35,6 +39,8 @@ const PasswordInput = ({
         name={name}
         placeholder={placeholder}
         defaultValue={defaultValue}
+        value={value}
+        onChange={onChange}
         disabled={disabled}
         aria-required={ariaRequired}
         className={cn("pr-10", className)}
