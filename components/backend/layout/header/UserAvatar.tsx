@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/server/auth/getCurrentUser";
+import { getCurrentUserFromSession } from "@/server/auth/getCurrentUserFromSession";
 import Link from "next/link";
 
 /**
@@ -7,7 +7,11 @@ import Link from "next/link";
  * @param {string} username - The user's name
  * @returns {React.ReactNode} The UserAvatarIcon component
  */
-const UserAvatarIcon = ({ username }: { username: string }) => {
+const UserAvatarIcon = ({
+  username,
+}: {
+  username: string;
+}): React.ReactNode | null => {
   if (!username) {
     return null;
   }
@@ -24,10 +28,10 @@ const UserAvatarIcon = ({ username }: { username: string }) => {
 /**
  * UserAvatar component
  * Displays the user's avatar and name
- * @returns {Promise<JSX.Element | null>} The UserAvatar component
+ * @returns {React.ReactNode} The UserAvatar component
  */
-const UserAvatar = async () => {
-  const currentUser = await getCurrentUser();
+const UserAvatar = async (): Promise<React.ReactNode | null> => {
+  const currentUser = await getCurrentUserFromSession();
   if (!currentUser) {
     return null;
   }
