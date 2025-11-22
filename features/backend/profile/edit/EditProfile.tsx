@@ -7,12 +7,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import PasswordInput from "@/components/auth/PasswordInput";
 import CustomInput from "@/components/shared/CustomInput";
-import CustomSelect from "@/components/shared/CustomSelect";
-import IconButton from "@/components/shared/IconButton";
-import { USER_ROLE_OPTIONS, USER_STATUS_OPTIONS } from "@/lib/constants";
 import { CurrentUser } from "@/types/user";
-import { X } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { useActionState, useEffect } from "react";
+import { updateProfile } from "@/server/actions/profile";
+import { toast } from "sonner";
 
 /**
  * EditProfile component
@@ -27,6 +28,18 @@ const EditProfile = ({
   currentUser: CurrentUser;
   onClose: () => void;
 }) => {
+  const [state, formAction, pending] = useActionState(updateProfile, null);
+
+  console.log(state);
+
+  // Show toast notification and close form on success
+  useEffect(() => {
+    if (state?.success) {
+      toast.success("User updated successfully!");
+      onClose();
+    }
+  }, [state, onClose]);
+
   if (!currentUser) {
     return (
       <div className="text-center py-8">
@@ -36,69 +49,64 @@ const EditProfile = ({
   }
 
   return (
-    <>
-      <div className="space-y-6">
-        {/* Edit Form Layout */}
-        <Card className="h-fit border-primary/50">
-          <CardHeader className="relative">
-            <IconButton
-              type="button"
-              variant="ghost"
-              icon={X}
-              label="Close edit form"
-              className="absolute right-4 -top-2 h-6 w-6 [&>span]:hidden"
-              onClick={onClose}
+    <Card className="w-full max-w-md min-h-[400px] border-primary/50">
+      <CardHeader>
+        <CardTitle className="text-lg">{currentUser.name}</CardTitle>
+        <CardDescription className="text-sm text-muted-foreground">
+          Update your account information here.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form className="space-y-5" action={formAction}>
+          <CustomInput
+            id="profile-full-name"
+            label="Full Name"
+            placeholder="Enter your full name"
+            defaultValue={currentUser.name ?? ""}
+            labelClassName="text-sm font-medium text-muted-foreground"
+            disabled={pending}
+            name="name"
+          />
+
+          <CustomInput
+            id="profile-email"
+            type="email"
+            label="Email Address"
+            placeholder="name@example.com"
+            defaultValue={currentUser.email}
+            labelClassName="text-sm font-medium text-muted-foreground"
+            name="email"
+          />
+
+          <div className="space-y-2">
+            <label
+              htmlFor="profile-password"
+              className="text-sm font-medium text-muted-foreground"
+            >
+              New Password (leave empty to keep current)
+            </label>
+            <PasswordInput
+              id="profile-password"
+              name="password"
+              placeholder="Enter new password"
             />
-            <CardTitle className="text-lg">{currentUser.name}</CardTitle>
-            <CardDescription className="text-sm text-muted-foreground">
-              Update your account information here.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form className="space-y-5">
-              <CustomInput
-                id="profile-full-name"
-                label="Full Name"
-                placeholder="Enter your full name"
-                defaultValue={currentUser.name ?? ""}
-                labelClassName="text-sm font-medium text-muted-foreground"
-              />
+          </div>
 
-              <CustomInput
-                id="profile-email"
-                type="email"
-                label="Email Address"
-                placeholder="name@example.com"
-                defaultValue={currentUser.email}
-                labelClassName="text-sm font-medium text-muted-foreground"
-              />
-
-              <CustomSelect
-                id="profile-role"
-                label="Role"
-                placeholder="Select a role"
-                value={currentUser.role}
-                options={USER_ROLE_OPTIONS}
-                labelClassName="text-sm font-medium text-muted-foreground"
-              />
-
-              <CustomSelect
-                id="profile-status"
-                label="Status"
-                placeholder="Select status"
-                value={currentUser.isActive ? "active" : "inactive"}
-                options={USER_STATUS_OPTIONS}
-                labelClassName="text-sm font-medium text-muted-foreground"
-              />
-
-              <div className="flex justify-end">
-                <Button type="submit">Save Changes</Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    </>
+          <div className="flex justify-end">
+            <Button type="submit" disabled={pending}>
+              {pending ? (
+                <>
+                  <Loader2 className="animate-spin" aria-hidden="true" />
+                  <span aria-live="polite">Updating...</span>
+                </>
+              ) : (
+                "Update Profile"
+              )}
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
   );
 };
 
