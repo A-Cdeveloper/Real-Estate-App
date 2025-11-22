@@ -57,6 +57,7 @@ const ProfileContent = ({
         isOpen={isEditing}
         onClose={handleCloseEdit}
         showCloseButton={false}
+        disableClose={true}
       >
         <EditProfile
           key={isEditing ? "edit-open" : "edit-closed"}
@@ -69,6 +70,7 @@ const ProfileContent = ({
         isOpen={isDeleting}
         onClose={handleCloseDelete}
         showCloseButton={false}
+        disableClose={true}
       >
         <DeleteConfirm
           onClose={handleCloseDelete}

@@ -50,7 +50,7 @@ const EditProfile = ({
   }
 
   return (
-    <Card className="w-[448px] border-primary/50">
+    <Card className="w-[448px] border-primary/50 py-5">
       <CardHeader className="relative">
         <IconButton
           type="button"
@@ -59,6 +59,7 @@ const EditProfile = ({
           label="Close edit form"
           className="absolute right-2 -top-4 h-6 w-6 [&>span]:hidden"
           onClick={onClose}
+          disabled={pending}
         />
         <CardTitle className="text-lg">{currentUser.name}</CardTitle>
         <CardDescription className="text-sm text-muted-foreground">
@@ -85,6 +86,7 @@ const EditProfile = ({
             defaultValue={currentUser.email}
             labelClassName="text-sm font-medium text-muted-foreground"
             name="email"
+            disabled={pending}
           />
 
           <div className="space-y-2">
@@ -98,6 +100,7 @@ const EditProfile = ({
               id="profile-password"
               name="password"
               placeholder="Enter new password"
+              disabled={pending}
             />
           </div>
 

@@ -3,7 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import IconButton from "@/components/shared/IconButton";
-import { X } from "lucide-react";
+import { Loader2, X } from "lucide-react";
+import { deleteProfile } from "@/server/actions/profile";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 
 /**
  * DeleteConfirm component
@@ -18,14 +22,26 @@ const DeleteConfirm = ({
   onClose: () => void;
   onConfirm: () => void;
 }) => {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
   const handleConfirm = () => {
-    // TODO: Implement delete functionality
-    console.log("Delete confirmed");
-    onConfirm();
+    startTransition(async () => {
+      const result = await deleteProfile();
+      if (result?.success) {
+        toast.success("Profile deleted successfully");
+        onConfirm();
+        setTimeout(() => {
+          router.replace("/login");
+        }, 300); // 300ms delay to ensure the modal is closed before redirecting
+      } else {
+        toast.error(result?.error || "Failed to delete profile");
+      }
+    });
   };
 
   return (
-    <Card className="w-[448px] border-destructive/50">
+    <Card className="w-[308px] border-destructive/50 py-5">
       <CardHeader className="relative">
         <IconButton
           type="button"
@@ -34,20 +50,35 @@ const DeleteConfirm = ({
           label="Close delete confirmation"
           className="absolute right-2 -top-4 h-6 w-6 [&>span]:hidden"
           onClick={onClose}
+          disabled={isPending}
         />
-        <CardTitle className="text-lg">Delete Profile</CardTitle>
+        <CardTitle className="text-lg"> Are you sure?</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
-          <p className="text-center text-base text-muted-foreground">
-            Are you sure?
-          </p>
           <div className="flex justify-center gap-3">
-            <Button type="button" variant="outline" onClick={onClose}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
+              disabled={isPending}
+            >
               Exit
             </Button>
-            <Button type="button" variant="destructive" onClick={handleConfirm}>
-              Confirm
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleConfirm}
+              disabled={isPending}
+            >
+              {isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                "Confirm"
+              )}
             </Button>
           </div>
         </div>
