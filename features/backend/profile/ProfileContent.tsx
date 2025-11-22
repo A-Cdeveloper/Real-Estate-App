@@ -53,7 +53,11 @@ const ProfileContent = ({
         onDeleteClick={handleDeleteClick}
       />
 
-      <Modal isOpen={isEditing} onClose={handleCloseEdit}>
+      <Modal
+        isOpen={isEditing}
+        onClose={handleCloseEdit}
+        showCloseButton={false}
+      >
         <EditProfile
           key={isEditing ? "edit-open" : "edit-closed"}
           currentUser={currentUser}
@@ -61,7 +65,11 @@ const ProfileContent = ({
         />
       </Modal>
 
-      <Modal isOpen={isDeleting} onClose={handleCloseDelete}>
+      <Modal
+        isOpen={isDeleting}
+        onClose={handleCloseDelete}
+        showCloseButton={false}
+      >
         <DeleteConfirm
           onClose={handleCloseDelete}
           onConfirm={handleConfirmDelete}

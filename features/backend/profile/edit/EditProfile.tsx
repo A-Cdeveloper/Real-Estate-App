@@ -9,8 +9,9 @@ import {
 } from "@/components/ui/card";
 import PasswordInput from "@/components/auth/PasswordInput";
 import CustomInput from "@/components/shared/CustomInput";
+import IconButton from "@/components/shared/IconButton";
 import { CurrentUser } from "@/types/user";
-import { Loader2 } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 import { useActionState, useEffect } from "react";
 import { updateProfile } from "@/server/actions/profile";
 import { toast } from "sonner";
@@ -49,8 +50,16 @@ const EditProfile = ({
   }
 
   return (
-    <Card className="w-full max-w-md min-h-[400px] border-primary/50">
-      <CardHeader>
+    <Card className="w-[448px] border-primary/50">
+      <CardHeader className="relative">
+        <IconButton
+          type="button"
+          variant="ghost"
+          icon={X}
+          label="Close edit form"
+          className="absolute right-2 -top-4 h-6 w-6 [&>span]:hidden"
+          onClick={onClose}
+        />
         <CardTitle className="text-lg">{currentUser.name}</CardTitle>
         <CardDescription className="text-sm text-muted-foreground">
           Update your account information here.

@@ -1,12 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import IconButton from "@/components/shared/IconButton";
+import { X } from "lucide-react";
 
 /**
  * DeleteConfirm component
@@ -28,8 +25,16 @@ const DeleteConfirm = ({
   };
 
   return (
-    <Card className="w-full max-w-md min-h-[400px] border-destructive/50">
-      <CardHeader>
+    <Card className="w-[448px] border-destructive/50">
+      <CardHeader className="relative">
+        <IconButton
+          type="button"
+          variant="ghost"
+          icon={X}
+          label="Close delete confirmation"
+          className="absolute right-2 -top-4 h-6 w-6 [&>span]:hidden"
+          onClick={onClose}
+        />
         <CardTitle className="text-lg">Delete Profile</CardTitle>
       </CardHeader>
       <CardContent>
@@ -52,4 +57,3 @@ const DeleteConfirm = ({
 };
 
 export default DeleteConfirm;
-
