@@ -77,3 +77,17 @@ model News {
 
   @@map("news")
 }
+
+model Settings {
+  id             String   @id @default(cuid())
+  appName        String
+  appDescription String   @db.Text
+  address        String
+  phone          String
+  email          String
+  logo           String?  // URL or path to logo image
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("settings")
+}
