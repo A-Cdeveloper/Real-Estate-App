@@ -79,7 +79,10 @@ export async function updateSettings(
 /**
  * Upload logo
  */
-export const uploadLogo = async (file: File): Promise<string | null> => {
+export const uploadLogo = async (
+  file: File,
+  type: "dark" | "light"
+): Promise<string | null> => {
   try {
     // First, upload the file to IPFS
     const uploadResult = await pinata.upload.public.file(file);
@@ -97,12 +100,12 @@ export const uploadLogo = async (file: File): Promise<string | null> => {
     // Convert CID to URL using gateway
     const url = await pinata.gateways.public.convert(cid);
 
-    // Update settings with logo URL (update both dark and light for now)
+    // Update settings with logo URL for the specified type
     const existingSettings = await prisma.settings.findFirst();
     if (existingSettings) {
       await prisma.settings.update({
         where: { id: existingSettings.id },
-        data: { logo_dark: url, logo_light: url },
+        data: type === "dark" ? { logo_dark: url } : { logo_light: url },
       });
       revalidatePath("/settings");
     }
@@ -117,8 +120,7 @@ export const uploadLogo = async (file: File): Promise<string | null> => {
 /**
  * Server Action: Remove logo
  */
-
-export const removeLogo = async () => {
+export const removeLogo = async (type: "dark" | "light") => {
   const existingSettings = await prisma.settings.findFirst();
   if (!existingSettings) {
     return {
@@ -129,7 +131,7 @@ export const removeLogo = async () => {
   try {
     await prisma.settings.update({
       where: { id: existingSettings.id },
-      data: { logo_dark: null, logo_light: null },
+      data: type === "dark" ? { logo_dark: null } : { logo_light: null },
     });
     revalidatePath("/settings");
     return { success: true };
