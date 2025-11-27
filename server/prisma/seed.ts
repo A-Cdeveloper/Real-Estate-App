@@ -167,6 +167,7 @@ async function main() {
       email: "aleksandar@e-seo.info",
       password: "password", // u realnosti hash!
       name: "ESEO Real Estate Agent",
+      role: "ADMIN",
     },
   });
 
