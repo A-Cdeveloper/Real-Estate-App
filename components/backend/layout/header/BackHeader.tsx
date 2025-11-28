@@ -7,7 +7,7 @@ import UserArea from "./UserArea";
  * BackHeader component
  * Server component that renders the backend header
  * Contains logo, notifications, theme toggle, and user area
- * @returns {Promise<JSX.Element>} The BackHeader component
+ * @returns The BackHeader component
  */
 const BackHeader = async () => {
   return (

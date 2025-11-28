@@ -1,4 +1,5 @@
 import { getCurrentUserFromSession } from "@/server/auth/getCurrentUserFromSession";
+import { CurrentUser } from "@/types/user";
 import Link from "next/link";
 
 /**
@@ -28,23 +29,20 @@ const UserAvatarIcon = ({
 /**
  * UserAvatar component
  * Displays the user's avatar and name
- * @returns {React.ReactNode} The UserAvatar component
+ * @returns The UserAvatar component
  */
-const UserAvatar = async (): Promise<React.ReactNode | null> => {
-  const currentUser = await getCurrentUserFromSession();
-  if (!currentUser) {
-    return null;
-  }
-
-  const displayName = currentUser.name || currentUser.email || "Unknown user";
+const UserAvatar = async ({
+  user,
+}: {
+  user: CurrentUser;
+}): Promise<React.ReactNode | null> => {
+  const displayName = user.name || user.email || "Unknown user";
   return (
     <Link href="/profile" className="flex items-center gap-2">
       <UserAvatarIcon username={displayName} />
       <span className="flex flex-col">
         <span className="text-sm font-semibold leading-4">{displayName}</span>
-        <span className="text-xs text-muted-foreground">
-          {currentUser.email}
-        </span>
+        <span className="text-xs text-muted-foreground">{user.email}</span>
       </span>
     </Link>
   );

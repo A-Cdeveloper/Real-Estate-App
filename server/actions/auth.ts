@@ -85,7 +85,7 @@ export async function loginAction(
     // Update lastLogin
     await prisma.user.update({
       where: { id: user.id },
-      data: { lastLogin: new Date() },
+      data: { lastLogin: new Date(), isOnline: true },
     });
 
     // Create session
@@ -118,7 +118,11 @@ export async function loginAction(
 /**
  * Server Action: Logout user
  */
-export async function logout(): Promise<{ success: true }> {
+export async function logout(userId: string): Promise<{ success: true }> {
+  await prisma.user.update({
+    where: { id: userId },
+    data: { isOnline: false },
+  });
   await deleteSession();
   return { success: true };
 }

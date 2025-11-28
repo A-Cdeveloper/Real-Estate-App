@@ -9,13 +9,13 @@ import { useRouter } from "next/navigation";
  * Logout component
  * Client component that handles user logout functionality
  * Calls the logout server action and redirects to login page
- * @returns {React.ReactNode} The Logout component
+ * @returns The Logout component
  */
-const Logout = () => {
+const Logout = ({ userId }: { userId: string }) => {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await logout();
+    await logout(userId);
     router.replace("/login");
     router.refresh();
   };

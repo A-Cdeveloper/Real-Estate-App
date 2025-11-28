@@ -26,6 +26,7 @@ model User {
   name                     String?
   role                     Role
   isActive                 Boolean    @default(true)
+  isOnline                 Boolean    @default(false)
   lastLogin                DateTime?
   passwordResetToken       String?
   passwordResetTokenExpiry DateTime?
