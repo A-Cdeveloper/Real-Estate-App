@@ -26,6 +26,11 @@ export const updateSettingsFormSchema = z.object({
   email: emailSchema,
   logo_dark: z.string().nullish(), // Optional dark mode logo URL or path (can be null or undefined)
   logo_light: z.string().nullish(), // Optional light mode logo URL or path (can be null or undefined)
+  facebook: z.string().nullish(),
+  instagram: z.string().nullish(),
+  x: z.string().nullish(),
+  linkedin: z.string().nullish(),
+  youtube: z.string().nullish(),
 });
 
 export type UpdateSettingsFormData = z.infer<typeof updateSettingsFormSchema>;

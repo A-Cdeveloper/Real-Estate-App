@@ -133,6 +133,94 @@ const SettingsForm = ({ settings }: { settings: UpdateSettings }) => {
             address={settings.address ?? null}
           />
         </Suspense>
+
+        <div className="grid grid-cols-2 gap-4 col-span-2 mt-6 border-t pt-6">
+          <div>
+            <CustomInput
+              id="facebook"
+              placeholder="Facebook page URL"
+              defaultValue={settings.facebook ?? ""}
+              name="facebook"
+              onBlur={(e) => handleBlur("facebook", e.target.value)}
+            />
+            <ErrorFormMessages
+              state={{
+                success: false,
+                errors: { facebook: errors.facebook },
+              }}
+              fieldName="facebook"
+              fieldId="facebook"
+            />
+          </div>
+          <div>
+            <CustomInput
+              id="instagram"
+              placeholder="Instagram profile URL"
+              defaultValue={settings.instagram ?? ""}
+              name="instagram"
+              onBlur={(e) => handleBlur("instagram", e.target.value)}
+            />
+            <ErrorFormMessages
+              state={{
+                success: false,
+                errors: { instagram: errors.instagram },
+              }}
+              fieldName="instagram"
+              fieldId="instagram"
+            />
+          </div>
+          <div>
+            <CustomInput
+              id="x"
+              placeholder="X (Twitter) profile URL"
+              defaultValue={settings.x ?? ""}
+              name="x"
+              onBlur={(e) => handleBlur("x", e.target.value)}
+            />
+            <ErrorFormMessages
+              state={{
+                success: false,
+                errors: { x: errors.x },
+              }}
+              fieldName="x"
+              fieldId="x"
+            />
+          </div>
+          <div>
+            <CustomInput
+              id="linkedin"
+              placeholder="LinkedIn company page URL"
+              defaultValue={settings.linkedin ?? ""}
+              name="linkedin"
+              onBlur={(e) => handleBlur("linkedin", e.target.value)}
+            />
+            <ErrorFormMessages
+              state={{
+                success: false,
+                errors: { linkedin: errors.linkedin },
+              }}
+              fieldName="linkedin"
+              fieldId="linkedin"
+            />
+          </div>
+          <div>
+            <CustomInput
+              id="youtube"
+              placeholder="YouTube channel URL"
+              defaultValue={settings.youtube ?? ""}
+              name="youtube"
+              onBlur={(e) => handleBlur("youtube", e.target.value)}
+            />
+            <ErrorFormMessages
+              state={{
+                success: false,
+                errors: { youtube: errors.youtube },
+              }}
+              fieldName="youtube"
+              fieldId="youtube"
+            />
+          </div>
+        </div>
       </form>
     </div>
   );

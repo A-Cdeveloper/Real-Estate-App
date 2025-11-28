@@ -34,7 +34,7 @@ const Logo = ({
         alt=""
         width={width}
         height={height}
-        className="dark:hidden min-w-[100px]"
+        className="dark:hidden max-h-[70px] w-auto"
         aria-hidden="true"
       />
       {/* Dark theme logo */}
@@ -43,7 +43,7 @@ const Logo = ({
         alt=""
         width={width}
         height={height}
-        className="hidden dark:block min-w-[100px]"
+        className="hidden dark:block max-h-[70px] w-auto"
         aria-hidden="true"
       />
       <span className="sr-only">{appName}</span>

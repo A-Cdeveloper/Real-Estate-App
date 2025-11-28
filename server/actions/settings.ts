@@ -53,6 +53,11 @@ export async function updateSettings(
       address: data.address ?? existingSettings.address,
       logo_dark: data.logo_dark ?? existingSettings.logo_dark,
       logo_light: data.logo_light ?? existingSettings.logo_light,
+      facebook: data.facebook ?? existingSettings.facebook,
+      instagram: data.instagram ?? existingSettings.instagram,
+      x: data.x ?? existingSettings.x,
+      linkedin: data.linkedin ?? existingSettings.linkedin,
+      youtube: data.youtube ?? existingSettings.youtube,
     };
 
     // Validate merged data with full schema

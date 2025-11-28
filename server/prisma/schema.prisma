@@ -91,6 +91,11 @@ model Settings {
   logo_light     String? // URL or path to light mode logo image
   lat            Float? // latitude koordinata
   lng            Float? // longitude koordinata
+  facebook       String? // Facebook page URL
+  instagram      String? // Instagram profile URL
+  x              String? // X (Twitter) profile URL
+  linkedin       String? // LinkedIn company page URL
+  youtube        String? // YouTube channel URL
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
