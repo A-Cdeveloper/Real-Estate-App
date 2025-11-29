@@ -82,6 +82,19 @@ export async function loginAction(
       };
     }
 
+    if (!user.isActive) {
+      return {
+        success: false,
+        errors: {
+          _general: ["User is not active.Please contact support."],
+        },
+        data: {
+          email,
+          password,
+        },
+      };
+    }
+
     // Update lastLogin
     await prisma.user.update({
       where: { id: user.id },
