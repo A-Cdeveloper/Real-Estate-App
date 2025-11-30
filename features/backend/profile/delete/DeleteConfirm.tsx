@@ -29,11 +29,8 @@ const DeleteConfirm = ({
     startTransition(async () => {
       const result = await deleteProfile();
       if (result?.success) {
-        toast.success("Profile deleted successfully");
         onConfirm();
-        setTimeout(() => {
-          router.replace("/login");
-        }, 300); // 300ms delay to ensure the modal is closed before redirecting
+        router.replace("/login");
       } else {
         toast.error(result?.error || "Failed to delete profile");
       }

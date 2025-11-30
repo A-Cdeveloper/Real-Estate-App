@@ -1,7 +1,10 @@
 "use client";
 
 import IconButton from "@/components/shared/IconButton";
+import { deleteProfile } from "@/server/actions/profile";
 import { Edit, Trash2 } from "lucide-react";
+import { startTransition, useTransition } from "react";
+import { toast } from "sonner";
 
 /**
  * ProfileActionsButtons component
@@ -16,12 +19,6 @@ const ProfileActionsButtons = ({
   onEditClick: () => void;
   onDeleteClick?: () => void;
 }) => {
-  const handleDelete = () => {
-    // TODO: Implement delete functionality
-    console.log("Delete profile");
-    onDeleteClick?.();
-  };
-
   return (
     <div className="flex flex-col sm:flex-row gap-3 justify-end w-full xl:w-2/3">
       <IconButton
@@ -36,7 +33,7 @@ const ProfileActionsButtons = ({
         className="w-full sm:w-auto"
         icon={Trash2}
         label="Delete Profile"
-        onClick={handleDelete}
+        onClick={onDeleteClick}
       />
     </div>
   );
