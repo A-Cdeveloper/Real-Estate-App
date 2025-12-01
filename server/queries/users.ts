@@ -7,9 +7,18 @@ import { ensureAdminAccess } from "../auth/ensureAdminAccess";
  * Fetches all users with the fields needed for backend profile views, including property counts.
  * Admin-only query - requires admin access.
  */
-export const getUsers = async (): Promise<{
+export const getUsers = async ({
+  page = 1,
+  limit = 10,
+}: {
+  page?: number;
+  limit?: number;
+}): Promise<{
   users: UserWithProperties[];
   total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
 }> => {
   await ensureAdminAccess();
   try {
@@ -23,6 +32,8 @@ export const getUsers = async (): Promise<{
           },
         },
         orderBy: [{ role: "asc" }, { isActive: "desc" }],
+        skip: (page - 1) * limit,
+        take: limit,
       }),
       prisma.user.count(),
     ]);
@@ -33,6 +44,9 @@ export const getUsers = async (): Promise<{
         propertyCount: _count?.properties ?? 0,
       })),
       total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit) || 1,
     };
   } catch (error) {
     console.error("Database error:", error);

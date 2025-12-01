@@ -5,10 +5,15 @@ import { getUsers } from "@/server/queries/users";
 import { adminGuard } from "@/server/auth/adminGuard";
 import { getCurrentUserFromSession } from "@/server/auth/getCurrentUserFromSession";
 
-const UsersPage = async () => {
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+const UsersPage = async ({ searchParams }: { searchParams: SearchParams }) => {
   // Check if the user is an admin
   await adminGuard();
-  const { users, total } = await getUsers();
+  const params = await searchParams;
+  const { users, total, page, totalPages } = await getUsers({
+    page: Number(params.page) || 1,
+  });
   const currentUser = await getCurrentUserFromSession();
   return (
     <div>
@@ -17,6 +22,8 @@ const UsersPage = async () => {
         users={users}
         total={total}
         currentUserId={currentUser?.id as string}
+        totalPages={totalPages}
+        page={+page}
       />
     </div>
   );
