@@ -9,9 +9,9 @@ const LatestNewsItem = ({ newsItem }: { newsItem: News }) => {
     <Card className="py-4 rounded-none border-0 border-b border-border bg-transparent shadow-none hover:bg-muted transition-colors">
       <Link href={`/news/${newsItem.id}`} className="flex gap-4 px-2">
         <CustumImage
-          src={newsItem.image}
+          src={newsItem.image || "/default-news.jpg"}
           alt={newsItem.title}
-          className="w-25 h-25 flex-shrink-0"
+          className="w-25 h-25 flex-shrink-0 border border-border"
         />
         <div className="flex-1 flex flex-col justify-between">
           <div>

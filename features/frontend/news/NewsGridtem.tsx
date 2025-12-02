@@ -9,7 +9,7 @@ const NewsGridtem = ({ newsItem }: { newsItem: News }) => {
     <Card className="group overflow-hidden hover:shadow-md transition-shadow p-0 hover:bg-muted">
       <Link href={`/news/${newsItem.id}`}>
         <CustumImage
-          src={newsItem.image}
+          src={newsItem.image || "/default-news.jpg"}
           alt={newsItem.title}
           className="h-56 w-full rounded-none"
         />
