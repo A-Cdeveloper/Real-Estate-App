@@ -187,15 +187,28 @@ export async function deleteNews(id: string) {
 
 /**
  * Upload a news image and update the news item
+ *
+ * This function supports two modes:
+ * 1. CREATE mode (newsId === "temp"):
+ *    - Uploads image to IPFS
+ *    - Returns URL without saving to database
+ *    - Used when creating new news (news doesn't exist yet)
+ *    - URL is stored in form state and sent with form submission
+ *
+ * 2. EDIT mode (real newsId):
+ *    - Uploads image to IPFS
+ *    - Updates news record in database with image URL
+ *    - Used when editing existing news
+ *
  * @param file - The file to upload
- * @param newsId - The ID of the news item to update
+ * @param newsId - The ID of the news item to update, or "temp" for create mode
  * @returns The URL of the uploaded image, or null if upload failed
  */
 export const uploadNewsImage = async (
   file: File,
   newsId: string
 ): Promise<string | null> => {
-  // Upload the image using the shared upload function
+  // Upload the image to IPFS using the shared upload function
   const url = await uploadImagePinata(
     file,
     NEWS_IMAGE_ALLOWED_TYPES,
@@ -207,13 +220,21 @@ export const uploadNewsImage = async (
     return null;
   }
 
-  // Update news item with the new image URL
+  // CREATE mode: newsId is "temp" (news doesn't exist yet)
+  // Just return the URL without updating database
+  // The URL will be saved when the news is created via addNews action
+  if (newsId === "temp") {
+    return url;
+  }
+
+  // EDIT mode: newsId is a real ID (news already exists)
+  // Update the news record in database with the new image URL
   try {
     await prisma.news.update({
       where: { id: newsId },
       data: { image: url },
     });
-    revalidatePath("/news");
+    //revalidatePath("/news");
   } catch (error) {
     console.error("Error updating news image:", error);
     return null;
@@ -234,7 +255,7 @@ export const removeNewsImage = async (newsId: string) => {
       where: { id: newsId },
       data: { image: null },
     });
-    revalidatePath("/news");
+    //revalidatePath("/news");
     return { success: true };
   } catch (error) {
     console.error("Database error:", error);

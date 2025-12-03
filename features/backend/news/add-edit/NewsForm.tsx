@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { addNews, updateNews } from "@/server/actions/news";
 import { News } from "@prisma/client";
 import { Loader2, X } from "lucide-react";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 import NewsImageUploader from "./NewsImageUploader";
 
@@ -42,6 +42,24 @@ const NewsForm = ({ onClose, mode, initialData }: NewsFormProps) => {
   const formAction = mode === "create" ? createAction : updateAction;
   const pending = mode === "create" ? createPending : updatePending;
 
+  /**
+   * State to store uploaded image URL in create mode.
+   *
+   * Flow for image upload in CREATE mode:
+   * 1. User uploads image → NewsImageUploader uses fake ID "temp"
+   * 2. Image is uploaded to IPFS via uploadNewsImage("temp")
+   * 3. Server returns URL without saving to database (newsId === "temp")
+   * 4. URL is stored in uploadedImageUrl state via onImageChange callback
+   * 5. When form is submitted, URL is sent as hidden input field
+   * 6. addNews server action saves news with image URL to database
+   *
+   * Flow for image upload in EDIT mode:
+   * 1. User uploads image → NewsImageUploader uses real news ID
+   * 2. Image is uploaded to IPFS and database is updated immediately
+   * 3. No need to store URL in state (handled by NewsImageUploader)
+   */
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+
   useEffect(() => {
     if (state?.success) {
       toast.success(
@@ -70,6 +88,13 @@ const NewsForm = ({ onClose, mode, initialData }: NewsFormProps) => {
       </CardHeader>
       <CardContent>
         <form action={formAction} className="space-y-5">
+          {/* 
+            Hidden input to send uploaded image URL when creating news.
+            Only needed in create mode - in edit mode, image is saved directly via NewsImageUploader.
+          */}
+          {uploadedImageUrl && (
+            <input type="hidden" name="image" value={uploadedImageUrl} />
+          )}
           {mode === "edit" && initialData && (
             <div>
               <input type="hidden" name="id" value={initialData?.id} />
@@ -120,17 +145,37 @@ const NewsForm = ({ onClose, mode, initialData }: NewsFormProps) => {
               fieldId="description"
             />
           </div>
-          {mode === "edit" && initialData && (
-            <div>
-              <NewsImageUploader
-                newsId={initialData.id}
-                image={initialData.image}
-              />
-            </div>
-          )}
+          {/* 
+            NewsImageUploader is shown in both create and edit modes.
+            
+            CREATE mode:
+            - Uses fake ID "temp" (news doesn't exist yet)
+            - Image is uploaded to IPFS but not saved to database
+            - URL is stored in uploadedImageUrl state via onImageChange callback
+            - URL is sent with form submission as hidden input
+            
+            EDIT mode:
+            - Uses real news ID (news already exists)
+            - Image is uploaded to IPFS and database is updated immediately
+            - No need for onImageChange callback (handled internally)
+          */}
+          <div>
+            <NewsImageUploader
+              newsId={mode === "edit" && initialData ? initialData.id : "temp"}
+              image={
+                mode === "edit" ? initialData?.image || null : uploadedImageUrl
+              }
+              onImageChange={setUploadedImageUrl}
+            />
+          </div>
 
           <div className="flex justify-end">
-            <Button type="submit" disabled={pending}>
+            <Button
+              type="submit"
+              disabled={
+                pending || mode === "create" ? !uploadedImageUrl : false
+              }
+            >
               {pending ? (
                 <>
                   <Loader2 className="animate-spin" aria-hidden="true" />
