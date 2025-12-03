@@ -28,8 +28,10 @@ This project is a comprehensive real estate application that demonstrates modern
 
 - Latest news articles with grid layout
 - Individual news detail pages
-- Pagination support
+- Server-side pagination support
+- Server-side sorting by title, createdAt, and updatedAt
 - Date formatting utilities
+- Default image fallback for news articles
 
 **User Experience**
 
@@ -72,6 +74,20 @@ This project is a comprehensive real estate application that demonstrates modern
 - Type-safe operations with TypeScript generics
 - Server actions for user CRUD operations with Zod validation
 - Session-based current user detection
+
+**News Management (Admin)**
+
+- Complete news management system with create, edit, and delete functionality
+- Server-side pagination for efficient data loading
+- Server-side sorting by title, createdAt, and updatedAt
+- Generic table component (`GenericTable`) for reusable data display
+- Sortable columns with visual indicators (up/down arrows)
+- News image uploader with IPFS/Pinata integration
+- Image upload/removal without closing modal
+- Default image fallback for news articles
+- Type-safe operations with TypeScript generics
+- Server actions for news CRUD operations with Zod validation
+- Centralized file validation utility for consistent upload handling
 
 **Performance**
 
@@ -255,11 +271,24 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 │       │   │   ├── ActionsCell.tsx # Edit/Delete actions
 │       │   │   └── sortableColumns.ts # Sortable columns config
 │       │   └── AllUsers.tsx       # Main users list component
+│       ├── news/                 # News management
+│       │   ├── add-edit/         # Add/Edit news form
+│       │   │   ├── AddNews.tsx
+│       │   │   ├── NewsForm.tsx  # Generic form for create/edit
+│       │   │   └── NewsImageUploader.tsx # News image upload component
+│       │   ├── table/            # News table components
+│       │   │   ├── columns.tsx   # Table column definitions
+│       │   │   ├── ActionsCell.tsx # Edit/Delete actions
+│       │   │   └── sortableColumns.ts # Sortable columns config
+│       │   ├── delete/           # Delete confirmation
+│       │   │   └── DeleteConfirm.tsx
+│       │   └── AllNews.tsx       # Main news list component
 │       └── settings/             # Application settings
 │           ├── SettingsForm.tsx  # Settings form with auto-save
 │           ├── SettingsView.tsx  # Settings page view
 │           ├── logo/             # Logo uploader components
-│           │   └── LogosUploader.tsx
+│           │   ├── LogosUploader.tsx
+│           │   └── SingleLogoUploader.tsx # Single logo uploader with validation
 │           └── map/              # Map components
 │               └── MapClickHandler.tsx
 ├── components/
@@ -309,6 +338,8 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 │   │   ├── profile.ts            # Profile management actions
 │   │   ├── settings.ts           # Settings update action
 │   │   ├── users.ts              # User management actions
+│   │   ├── news.ts               # News management actions
+│   │   ├── uploadImagePinata.ts  # Centralized IPFS image upload action
 │   │   └── sendMessage.ts       # Contact form action
 │   ├── queries/                  # Database query functions
 │   │   ├── properties.ts
@@ -335,7 +366,8 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 │   │   ├── profile.ts            # Profile validation schemas
 │   │   ├── propertyFilters.ts
 │   │   ├── settings.ts           # Settings validation schemas
-│   │   └── user.ts               # User validation schemas
+│   │   ├── user.ts               # User validation schemas
+│   │   └── news.ts               # News validation schemas
 │   ├── utils/                    # Server utility functions
 │   │   └── zod.ts                # Zod error formatting
 │   ├── prisma.ts                 # Prisma client instance
@@ -348,7 +380,8 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 │   │   ├── pagination.ts         # Pagination utilities
 │   │   ├── parseSearchParams.ts # URL search params parsing
 │   │   ├── sortingParcer.ts     # Sorting utilities
-│   │   └── social.ts            # Social media platform utilities
+│   │   ├── social.ts            # Social media platform utilities
+│   │   └── file.ts              # File validation utilities
 │   ├── constants.ts              # Application constants
 │   ├── fonts.ts                  # Font configuration
 │   ├── utils.ts                  # General utilities
@@ -362,7 +395,8 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 │   ├── profile.ts                # Profile types
 │   ├── properties.ts             # Property types
 │   ├── settings.ts               # Settings types
-│   └── user.ts                   # User types
+│   ├── user.ts                   # User types
+│   └── news.ts                   # News types
 └── public/                       # Static assets
     └── fonts/                    # Custom fonts
 ```
@@ -478,7 +512,9 @@ DATABASE_URL="mysql://user:password@localhost:3306/database_name"
 ### Optional
 
 - `NEXT_PUBLIC_SITE_URL` - Public site URL for metadata and email templates (defaults to `https://realestatepro.com`)
-- `PINATA_JWT` - Pinata JWT token for IPFS file uploads (required for logo uploads)
+- `PINATA_JWT` - Pinata JWT token for IPFS file uploads (required for logo and news image uploads)
+- `PINATA_LOGO_GROUP_ID` - Pinata group ID for logo uploads (required for logo uploads)
+- `PINATA_NEWS_IMAGE_GROUP_ID` - Pinata group ID for news image uploads (required for news image uploads)
 - `EMAIL_USER` - Email address for sending emails (contact form, password reset)
 - `EMAIL_PASS` - Email password for SMTP authentication
 
@@ -534,6 +570,9 @@ The application implements a comprehensive filtering system:
 - Server-side pagination and sorting for efficient data loading
 - Type-safe generic components with TypeScript constraints
 - Optimized event handlers with useCallback hooks
+- Centralized file validation utility for consistent upload handling
+- IPFS/Pinata integration for image storage (logos and news images)
+- Environment-based configuration for Pinata group IDs
 
 ### Code Organization
 
@@ -566,6 +605,33 @@ The application includes a complete user management system for administrators:
 - **Role-Based Access**: Admin-only access with `adminGuard` middleware
 - **Helper Functions**: `parseUserFormData` and `toCurrentUser` for code reusability and DRY principles
 
+### News Management
+
+The application includes a complete news management system for administrators:
+
+- **Server-Side Operations**: All news operations (create, update, delete) use Next.js server actions
+- **Generic Form Component**: `NewsForm` component handles both create and edit modes with conditional rendering
+- **Server-Side Pagination**: Efficient data loading with configurable page size (default: 10 news items per page)
+- **Server-Side Sorting**: Sortable by title, createdAt, and updatedAt with URL-based state management
+- **Generic Table Component**: Reuses `GenericTable` component with TypeScript generics for consistent UI
+- **Sortable Columns**: Configurable sortable columns with visual indicators (ChevronUp/ChevronDown icons)
+- **Image Management**: `NewsImageUploader` component for uploading and removing news images
+  - IPFS/Pinata integration for image storage
+  - Client-side and server-side file validation (type, size)
+  - Image upload/removal without closing modal (local state management)
+  - Default image fallback for news articles
+- **Centralized Image Upload**: `uploadImagePinata` server action for reusable IPFS uploads
+  - Used by both logo and news image uploaders
+  - Environment-based group ID configuration
+  - Consistent validation and error handling
+- **File Validation Utility**: Centralized `validateFile` function in `lib/utils/file.ts`
+  - Reusable across all upload components
+  - Consistent validation messages and error handling
+- **Performance Optimization**: `React.memo` on `AllNews` component prevents re-renders when modals open
+- **Type Safety**: Full TypeScript support with `AddNews`, `UpdateNews`, and `DeleteNews` types
+- **Zod Validation**: Server-side validation for all news operations with detailed error messages
+- **Role-Based Access**: Admin-only access with `adminGuard` middleware
+
 ### Settings Management
 
 The application includes a comprehensive settings management system:
@@ -574,10 +640,11 @@ The application includes a comprehensive settings management system:
 - **Partial Updates**: Only changed fields are sent to the server, reducing network traffic
 - **Per-field Error Handling**: Validation errors are tracked per field and don't interfere with each other
 - **Logo Upload**: Separate upload fields for dark and light mode logos with IPFS/Pinata integration
-  - Client-side and server-side file validation (type, size)
+  - Client-side and server-side file validation using centralized `validateFile` utility
   - File input reset for re-uploading the same file
   - Confirmation dialog before deletion
   - Image optimization support
+  - Uses centralized `uploadImagePinata` server action
 - **Interactive Map**: Leaflet-based map for location selection
   - Click on map to set coordinates
   - Automatic reverse geocoding (coordinates → address)
