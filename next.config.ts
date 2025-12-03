@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   // Optimizacija za brže učitavanje resursa
   experimental: {
     optimizePackageImports: ["lucide-react", "@radix-ui/react-select"],
+    serverActions: {
+      bodySizeLimit: "10mb", // Increase limit for image uploads
+    },
   },
 
   // SWC compiler optimizacije
@@ -30,6 +33,7 @@ const nextConfig: NextConfig = {
         hostname: "pink-magnificent-cephalopod-824.mypinata.cloud",
       },
     ],
+    qualities: [25, 50, 75, 85],
   },
 
   // Headers za optimizaciju
