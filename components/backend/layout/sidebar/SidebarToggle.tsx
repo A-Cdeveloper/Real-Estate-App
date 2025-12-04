@@ -1,7 +1,6 @@
-import { ChevronRight, ChevronLeft } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { useSidebarStore } from "@/components/backend/layout/sidebar/sidebarStore";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const SidebarToggle = () => {
   const isCollapsed = useSidebarStore((state) => state.isCollapsed);

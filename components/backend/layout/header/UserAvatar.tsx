@@ -1,4 +1,3 @@
-import { getCurrentUserFromSession } from "@/server/auth/getCurrentUserFromSession";
 import { CurrentUser } from "@/types/user";
 import Link from "next/link";
 

@@ -1,10 +1,7 @@
 "use client";
 
 import IconButton from "@/components/shared/IconButton";
-import { deleteProfile } from "@/server/actions/profile";
 import { Edit, Trash2 } from "lucide-react";
-import { startTransition, useTransition } from "react";
-import { toast } from "sonner";
 
 /**
  * ProfileActionsButtons component
