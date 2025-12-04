@@ -21,6 +21,9 @@ const nextConfig: NextConfig = {
         : false,
   },
 
+  // Exclude Prisma from client bundle (Turbopack compatible)
+  serverExternalPackages: ["@prisma/client", "prisma"],
+
   // Image optimization - dozvoli eksterne domene
   images: {
     remotePatterns: [

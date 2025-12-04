@@ -25,7 +25,14 @@ export default async function AuthRootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const settings = await getSettings();
+  // Try to get settings, but use fallback values if it fails
+  let settings = null;
+  try {
+    settings = await getSettings();
+  } catch (error) {
+    console.error("Failed to load settings in auth layout:", error);
+    // Continue with fallback values
+  }
 
   const logoLight =
     settings?.logo_light && settings.logo_light.trim() !== ""
