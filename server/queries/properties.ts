@@ -52,19 +52,29 @@ export async function getPromotedProperties(
 
 /**
  * Get all properties with pagination and filters
- * @param take - The number of properties to return
- * @param skip - The number of properties to skip
+ * @param page - The page number (default: 1)
+ * @param limit - The number of properties per page (default: 12)
  * @param filters - The filters to apply
- * @param sort - The sorting order
- * @returns The properties
+ * @param sort - The sorting order (default: "createdAt_desc")
+ * @returns The properties with pagination info
  */
-
-export async function getAllProperties(
-  take: number = 12,
-  skip: number = 0,
-  filters?: PropertyFilters,
-  sort?: PropertySort
-) {
+export async function getAllProperties({
+  page = 1,
+  limit = 12,
+  filters,
+  sort = "createdAt_desc",
+}: {
+  page?: number;
+  limit?: number;
+  filters?: PropertyFilters;
+  sort?: PropertySort;
+}): Promise<{
+  properties: Awaited<ReturnType<typeof prisma.property.findMany>>;
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}> {
   try {
     const minPrice = filters?.minPrice ? Number(filters.minPrice) : undefined;
     const maxPrice = filters?.maxPrice ? Number(filters.maxPrice) : undefined;
@@ -88,10 +98,10 @@ export async function getAllProperties(
 
     const [properties, total] = await Promise.all([
       prisma.property.findMany({
-        take,
-        skip,
         where,
         orderBy,
+        skip: (page - 1) * limit,
+        take: limit,
       }),
       prisma.property.count({ where }),
     ]);
@@ -99,7 +109,9 @@ export async function getAllProperties(
     return {
       properties,
       total,
-      hasMore: skip + take < total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
     };
   } catch (error) {
     console.error("Database error:", error);

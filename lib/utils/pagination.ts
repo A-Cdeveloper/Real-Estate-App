@@ -1,12 +1,6 @@
 /**
- * Calculate skip value based on page number and items per page
- */
-export function calculateSkip(page: number, itemsPerPage: number): number {
-  return (page - 1) * itemsPerPage;
-}
-
-/**
- * Generate URL for a specific page
+ * Generate URL for a specific page with query parameters
+ * Used by PaginationControls component to create navigation URLs
  */
 export function getPageUrl(
   page: number,
@@ -23,40 +17,4 @@ export function getPageUrl(
   }
 
   return `${baseUrl}?${url.searchParams.toString()}`;
-}
-
-/**
- * Get pagination range (start and end indices for display)
- */
-export function getPaginationRange(
-  currentPage: number,
-  itemsPerPage: number,
-  total: number
-) {
-  const skip = calculateSkip(currentPage, itemsPerPage);
-  const start = skip + 1;
-  const end = Math.min(skip + itemsPerPage, total);
-
-  return { start, end };
-}
-
-/**
- * Get all pagination data in one call
- */
-export function getPaginationData(
-  page: number,
-  itemsPerPage: number,
-  total: number
-) {
-  const skip = calculateSkip(page, itemsPerPage);
-  const totalPages = Math.ceil(total / itemsPerPage);
-  const { start, end } = getPaginationRange(page, itemsPerPage, total);
-
-  return {
-    skip,
-    totalPages,
-    start,
-    end,
-    currentPage: page,
-  };
 }

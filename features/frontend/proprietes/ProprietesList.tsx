@@ -4,7 +4,6 @@
  * @returns ProprietesList component
  */
 
-import { calculateSkip, getPaginationData } from "@/lib/utils/pagination";
 import { parsePropertySearchParams } from "@/lib/utils/parseSearchParams";
 import { getAllProperties } from "@/server/queries/properties";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
@@ -23,20 +22,21 @@ const ProprietesList = async ({
   const { page, filters, queryParams, sort } =
     parsePropertySearchParams(params);
 
-  const skip = calculateSkip(page, ITEMS_PER_PAGE);
-  const { properties, total } = await getAllProperties(
-    ITEMS_PER_PAGE,
-    skip,
-    filters,
-    sort
-  );
-
-  // get pagination data
-  const { start, end, currentPage, totalPages } = getPaginationData(
+  const {
+    properties,
+    total,
+    page: currentPage,
+    totalPages,
+  } = await getAllProperties({
     page,
-    ITEMS_PER_PAGE,
-    total
-  );
+    limit: ITEMS_PER_PAGE,
+    filters,
+    sort,
+  });
+
+  // Calculate start and end for display
+  const start = (currentPage - 1) * ITEMS_PER_PAGE + 1;
+  const end = Math.min(start + ITEMS_PER_PAGE - 1, total);
 
   if (properties.length === 0) {
     return (
