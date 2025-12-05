@@ -28,32 +28,39 @@ export const getColumns = (): Column<PropertyWithOwner>[] => [
     label: "Name",
     render: (property) => {
       return (
-        <div className="flex items-center gap-2">
-          <h2 className="text-white max-w-[150px] line-clamp-2">
-            {property.name || "N/A"}
-          </h2>
-        </div>
-      );
-    },
-  },
-  {
-    key: "description",
-    label: "Description",
-    render: (property) => {
-      return (
-        <div className="line-clamp-2 max-w-xs">{property.description}</div>
+        <h2 className="text-white max-w-[120px] line-clamp-2">
+          {property.name || "N/A"}
+        </h2>
       );
     },
   },
 
   {
-    key: "createdAt",
-    label: "Created",
-    render: (property) => formatLongDate(property.createdAt),
+    key: "type",
+    label: "Type",
+    render: (property) => <span>{property.type || "N/A"}</span>,
+  },
+
+  {
+    key: "price",
+    label: "Price",
+    render: (property) => (
+      <span>€ {property.price.toLocaleString() || "N/A"}</span>
+    ),
   },
   {
-    key: "updatedAt",
-    label: "Updated",
+    key: "status",
+    label: "Status",
+    render: (property) => <span>{property.status || "N/A"}</span>,
+  },
+  {
+    key: "owner",
+    label: "Owner",
+    render: (property) => <span>{property.owner.name || "N/A"}</span>,
+  },
+  {
+    key: "createdAt",
+    label: "Created",
     render: (property) => formatLongDate(property.createdAt),
   },
 

@@ -29,7 +29,7 @@ const AllProprietes = ({
       <GenericTable
         data={properties}
         columns={getColumns()}
-        defaultSortField="createdAt"
+        defaultSortField="status"
         sortableColumns={sortableColumns}
         className="text-sm text-muted-foreground w-full"
       />
